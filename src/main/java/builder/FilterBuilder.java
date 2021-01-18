@@ -1,14 +1,20 @@
 package builder;
 
 import enums.FilterImpl;
+import enums.FilterType;
 import filter.api.Filter;
 import filter.impl.ACA.ACAFilter;
 import filter.impl.DFA.DFAFilter;
 import filter.impl.KMP.KMPFilter;
 
+/**
+ * @author guojingyu
+ */
 public class FilterBuilder {
 
     FilterImpl impl = FilterImpl.DFA;
+
+    FilterType type = FilterType.CHAR;
 
     public static FilterBuilder getBuilder() {
         return new FilterBuilder();
@@ -19,12 +25,17 @@ public class FilterBuilder {
         return this;
     }
 
+    public FilterBuilder setType(FilterType type) {
+        this.type = type;
+        return this;
+    }
+
     public Filter getFilter() {
         switch (impl) {
             // case KMP:
             //     return new KMPFilter();
             case DFA:
-                return new DFAFilter();
+                return new DFAFilter(this.type);
             // case ACA:
             //     return new ACAFilter();
             default:

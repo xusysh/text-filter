@@ -1,17 +1,20 @@
 package enums;
 
+/**
+ * @author guojingyu
+ */
 public enum FilterImpl {
 
     /**
-     * KMP算法
+     * Knuth-Morris-Pratt Algorithm
      */
     // KMP,
     /**
-     * DFA（确定有穷自动机）/Trie图
+     * Deterministic Finite Automaton/Prefix Tree
      */
     DFA,
     /**
-     * AC自动机
+     * Aho-Corasick Automaton
      */
     // ACA,
     ;

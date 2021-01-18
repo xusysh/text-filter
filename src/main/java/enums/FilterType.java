@@ -1,15 +1,18 @@
 package enums;
 
+/**
+ * @author guojingyu
+ */
 public enum FilterType {
 
     /**
-     * 过滤/替换串
+     * connect by character
      */
-    FILTER,
+    CHAR,
     /**
-     * 匹配串
+     * connect by word
      */
-    MATCH
+    WORD
     ;
 
 }
