@@ -1,10 +1,8 @@
 package builder;
 
 import enums.FilterImpl;
-import enums.FilterType;
 import filter.api.Filter;
 import filter.impl.ACA.ACAFilter;
-import filter.impl.BaseFilter;
 import filter.impl.DFA.DFAFilter;
 import filter.impl.KMP.KMPFilter;
 
@@ -23,12 +21,12 @@ public class FilterBuilder {
 
     public Filter getFilter() {
         switch (impl) {
-            case KMP:
-                return new KMPFilter();
+            // case KMP:
+            //     return new KMPFilter();
             case DFA:
                 return new DFAFilter();
-            case ACA:
-                return new ACAFilter();
+            // case ACA:
+            //     return new ACAFilter();
             default:
                 throw new EnumConstantNotPresentException(FilterImpl.class, impl.name());
         }

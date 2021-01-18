@@ -1,7 +1,5 @@
 package filter.impl;
 
-import enums.FilterImpl;
-import enums.FilterType;
 import filter.api.Filter;
 
 public class BaseFilter implements Filter {

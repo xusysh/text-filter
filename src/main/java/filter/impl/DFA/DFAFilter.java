@@ -1,9 +1,9 @@
 package filter.impl.DFA;
 
-import filter.api.Filter;
 import filter.impl.BaseFilter;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class DFAFilter extends BaseFilter {
 
@@ -15,10 +15,20 @@ public class DFAFilter extends BaseFilter {
     @Override
     public void loadRules(String[] rules) {
         super.loadRules(rules);
+        this.loadEdges();
     }
 
     private void loadEdges() {
+        if (Objects.isNull(this.edges) || this.edges.size() == 0) {
+            return;
+        }
+        for (String rule : rules) {
+            this.loadRuleEdges(rule);
+        }
+    }
 
+    private void loadRuleEdges(String rule) {
+        
     }
 
     public Boolean match(String target) {

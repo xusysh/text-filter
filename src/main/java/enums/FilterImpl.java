@@ -5,7 +5,7 @@ public enum FilterImpl {
     /**
      * KMP算法
      */
-    KMP,
+    // KMP,
     /**
      * DFA（确定有穷自动机）/Trie图
      */
@@ -13,7 +13,7 @@ public enum FilterImpl {
     /**
      * AC自动机
      */
-    ACA,
+    // ACA,
     ;
 
 }

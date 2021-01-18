@@ -2,8 +2,6 @@ package filter.impl.KMP;
 
 import filter.impl.BaseFilter;
 
-import java.util.HashMap;
-
 public class KMPFilter extends BaseFilter {
 
     public Boolean match(String target) {
