@@ -6,10 +6,6 @@ import filter.api.Filter;
 
 public class BaseFilter implements Filter {
 
-    FilterImpl impl = FilterImpl.DFA;
-
-    FilterType type = FilterType.MATCH;
-
     protected String[] rules;
 
     public void loadRules(String filepath) {
