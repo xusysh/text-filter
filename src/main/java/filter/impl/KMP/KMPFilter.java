@@ -8,8 +8,8 @@ import filter.impl.BaseFilter;
  */
 public class KMPFilter extends BaseFilter {
 
-    public KMPFilter(FilterType type) {
-        super(type);
+    public KMPFilter(FilterType type, String separator) {
+        super(type, separator);
     }
 
     public Boolean match(String target) {

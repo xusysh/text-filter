@@ -16,6 +16,8 @@ public class FilterBuilder {
 
     FilterType type = FilterType.CHAR;
 
+    String separator = "";
+
     public static FilterBuilder getBuilder() {
         return new FilterBuilder();
     }
@@ -30,12 +32,17 @@ public class FilterBuilder {
         return this;
     }
 
+    public FilterBuilder setSeparator(String separator) {
+        this.separator = separator;
+        return this;
+    }
+
     public Filter getFilter() {
         switch (impl) {
             // case KMP:
             //     return new KMPFilter();
             case DFA:
-                return new DFAFilter(this.type);
+                return new DFAFilter(this.type, this.separator);
             // case ACA:
             //     return new ACAFilter();
             default:

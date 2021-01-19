@@ -8,8 +8,8 @@ import filter.impl.BaseFilter;
  */
 public class ACAFilter extends BaseFilter {
 
-    public ACAFilter(FilterType type) {
-        super(type);
+    public ACAFilter(FilterType type, String separator) {
+        super(type, separator);
     }
 
     public Boolean match(String target) {

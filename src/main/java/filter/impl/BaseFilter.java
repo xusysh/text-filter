@@ -8,6 +8,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author guojingyu
@@ -18,10 +19,11 @@ public class BaseFilter implements Filter {
 
     protected List<String> rules;
 
-    protected String seperator;
+    protected String separator;
 
-    public BaseFilter(FilterType type) {
+    public BaseFilter(FilterType type, String separator) {
         this.type = type;
+        this.separator = separator;
         rules = new ArrayList<>();
     }
 
@@ -30,13 +32,11 @@ public class BaseFilter implements Filter {
         if (!file.exists()) {
             return;
         }
-
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
         try {
             fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
-
             String line = "";
             while ((line = bufferedReader.readLine()) != null) {
                 this.rules.add(line);
@@ -46,21 +46,20 @@ public class BaseFilter implements Filter {
         } catch (IOException e) {
             throw new IOException();
         } finally {
-            if (fileReader != null) {
+            if (!Objects.isNull(fileReader)) {
                 try {
                     fileReader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new IOException();
                 }
             }
-            if (bufferedReader != null) {
+            if (!Objects.isNull(bufferedReader)) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new IOException();
                 }
             }
-            this.addRules(rules);
         }
     }
 
