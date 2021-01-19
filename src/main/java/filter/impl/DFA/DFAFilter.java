@@ -1,20 +1,42 @@
 package filter.impl.DFA;
 
+import enums.FilterType;
 import filter.impl.BaseFilter;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author guojingyu
+ */
 public class DFAFilter extends BaseFilter {
 
     /**
-     * tire图中的边
+     * edges of a tire tree(graph)
      */
     HashMap<String, HashMap> edges;
 
+    public DFAFilter(FilterType type) {
+        super(type);
+    }
+
     @Override
-    public void loadRules(String[] rules) {
-        super.loadRules(rules);
+    public void loadRules(String filePath) throws IOException {
+        super.loadRules(filePath);
+        this.loadEdges();
+    }
+
+    @Override
+    public void addRules(List<String> rules) {
+        super.addRules(rules);
+        this.loadEdges();
+    }
+
+    @Override
+    public void addRules(String... rules) {
+        super.addRules(rules);
         this.loadEdges();
     }
 
@@ -28,7 +50,14 @@ public class DFAFilter extends BaseFilter {
     }
 
     private void loadRuleEdges(String rule) {
-        
+        if (this.type.equals(FilterType.WORD)) {
+            String[] words = rule.split(seperator);
+            // todo
+        } else {
+            for (char emm : rule.toCharArray()) {
+                // todo
+            }
+        }
     }
 
     public Boolean match(String target) {

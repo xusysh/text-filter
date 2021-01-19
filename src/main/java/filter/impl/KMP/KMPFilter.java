@@ -1,8 +1,16 @@
 package filter.impl.KMP;
 
+import enums.FilterType;
 import filter.impl.BaseFilter;
 
+/**
+ * @author guojingyu
+ */
 public class KMPFilter extends BaseFilter {
+
+    public KMPFilter(FilterType type) {
+        super(type);
+    }
 
     public Boolean match(String target) {
         return null;
