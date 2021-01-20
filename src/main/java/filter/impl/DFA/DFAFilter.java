@@ -68,10 +68,15 @@ public class DFAFilter extends BaseFilter {
 
     public Boolean match(String target) {
         Collection<String> words = this.getWords(target);
+        DFANode curNode = this.treeRoot;
         for (String word : words) {
-
+            curNode = curNode.getChildren().get(word);
+            if(Objects.isNull(curNode)) {
+                return false;
+            }
         }
-        return null;
+        if(!curNode.isLeaf()) return false;
+        return true;
     }
 
     private Collection<String> getWords(String target) {
