@@ -21,6 +21,8 @@ public class DFAFilter extends BaseFilter {
 
     public DFAFilter(FilterType type, String separator) {
         super(type, separator);
+        this.treeRoot = new DFANode();
+        this.treeRoot.setChildren(new HashMap<>());
     }
 
     @Override
@@ -46,24 +48,13 @@ public class DFAFilter extends BaseFilter {
             return;
         }
         HashMap<String, DFANode> nodeMap = new HashMap<>();
-        this.treeRoot = new DFANode();
-        DFANode curNode = this.treeRoot;
+        DFANode curNode;
         for (String rule : rules) {
-            DFANode preNode = null;
-            Collection<String> words;
-            if (this.type.equals(FilterType.WORD)) {
-                words = Arrays.asList(rule.split(separator, 0));
-            } else {
-                words = Arrays.asList(rule.toCharArray())
-                        .stream().map(item -> String.valueOf(item))
-                        .collect(Collectors.toList());
-            }
+            DFANode preNode = this.treeRoot;
+            Collection<String> words = this.getWords(rule);
             for (String word : words) {
-                if("".equals(word)) {
-                    continue;
-                }
                 if (!nodeMap.containsKey(word)) {
-                    curNode = Objects.isNull(preNode) ? curNode : new DFANode();
+                    curNode = new DFANode();
                     curNode.setVal(word);
                     curNode.setLeaf(true);
                     curNode.setChildren(new HashMap<>());
@@ -80,9 +71,24 @@ public class DFAFilter extends BaseFilter {
         }
     }
 
-
     public Boolean match(String target) {
+        Collection<String> words = this.getWords(target);
+        for (String word : words) {
+
+        }
         return null;
+    }
+
+    private Collection<String> getWords(String target) {
+        Collection<String> words;
+        if (FilterType.WORD.equals(this.type)) {
+            words = Arrays.asList(StringUtils.split(target, separator));
+        } else {
+            words = Arrays.asList(target.toCharArray())
+                    .stream().map(item -> String.valueOf(item))
+                    .collect(Collectors.toList());
+        }
+        return words;
     }
 
     public Boolean match(String[] target) {
