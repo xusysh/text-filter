@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author guojingyu
@@ -84,14 +85,15 @@ public class DFAFilter extends BaseFilter {
         if (FilterType.WORD.equals(this.type)) {
             words = Arrays.asList(StringUtils.split(target, separator));
         } else {
-            words = Arrays.asList(target.toCharArray())
-                    .stream().map(item -> String.valueOf(item))
-                    .collect(Collectors.toList());
+            words = Arrays.asList(target.split(""));
         }
         return words;
     }
 
-    public Boolean match(String[] target) {
+    public List<Boolean> match(String[] targetArr) {
+        for(String target:targetArr) {
+
+        }
         return null;
     }
 

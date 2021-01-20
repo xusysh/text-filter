@@ -4,7 +4,6 @@ import enums.FilterType;
 import filter.api.Filter;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +79,7 @@ public class BaseFilter implements Filter {
         return null;
     }
 
-    public Boolean match(String[] target) {
+    public List<Boolean> match(String[] target) {
         return null;
     }
 

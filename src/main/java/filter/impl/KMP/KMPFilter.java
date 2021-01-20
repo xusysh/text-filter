@@ -3,6 +3,8 @@ package filter.impl.KMP;
 import enums.FilterType;
 import filter.impl.BaseFilter;
 
+import java.util.List;
+
 /**
  * @author guojingyu
  */
@@ -16,7 +18,7 @@ public class KMPFilter extends BaseFilter {
         return null;
     }
 
-    public Boolean match(String[] target) {
+    public List<Boolean> match(String[] target) {
         return null;
     }
 

@@ -19,7 +19,7 @@ public interface Filter {
 
     Boolean match(String target);
 
-    Boolean match(String[] target);
+    List<Boolean> match(String[] target);
 
     String filter(String target);
 
