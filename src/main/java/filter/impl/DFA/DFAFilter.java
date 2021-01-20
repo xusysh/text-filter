@@ -47,25 +47,20 @@ public class DFAFilter extends BaseFilter {
         if (Objects.isNull(this.rules) || this.rules.size() == 0) {
             return;
         }
-        HashMap<String, DFANode> nodeMap = new HashMap<>();
         DFANode curNode;
         for (String rule : rules) {
             DFANode preNode = this.treeRoot;
             Collection<String> words = this.getWords(rule);
             for (String word : words) {
-                if (!nodeMap.containsKey(word)) {
+                curNode = preNode.getChildren().get(word);
+                if (Objects.isNull(curNode)) {
                     curNode = new DFANode();
                     curNode.setVal(word);
                     curNode.setLeaf(true);
                     curNode.setChildren(new HashMap<>());
-                    nodeMap.put(word, curNode);
-                } else {
-                    curNode = nodeMap.get(word);
                 }
-                if(!Objects.isNull(preNode)) {
-                    preNode.setLeaf(false);
-                    preNode.getChildren().put(word, curNode);
-                }
+                preNode.setLeaf(false);
+                preNode.getChildren().put(word, curNode);
                 preNode = curNode;
             }
         }
