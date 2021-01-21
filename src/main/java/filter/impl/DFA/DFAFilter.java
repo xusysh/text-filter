@@ -55,13 +55,9 @@ public class DFAFilter extends BaseFilter {
             for (String word : words) {
                 curNode = preNode.getChildren().get(word);
                 if (Objects.isNull(curNode)) {
-                    curNode = new DFANode();
-                    curNode.setVal(word);
-                    curNode.setLeaf(true);
-                    curNode.setChildren(new HashMap<>());
+                    curNode = new DFANode().setVal(word).setLeaf(true).setChildren(new HashMap<>());
+                    preNode.setLeaf(false).getChildren().put(word, curNode);
                 }
-                preNode.setLeaf(false);
-                preNode.getChildren().put(word, curNode);
                 preNode = curNode;
             }
         }
@@ -72,22 +68,16 @@ public class DFAFilter extends BaseFilter {
         DFANode curNode = this.treeRoot;
         for (String word : words) {
             curNode = curNode.getChildren().get(word);
-            if(Objects.isNull(curNode)) {
-                return false;
-            }
+            if(Objects.isNull(curNode)) return false;
         }
         if(!curNode.isLeaf()) return false;
         return true;
     }
 
     private Collection<String> getWords(String target) {
-        Collection<String> words;
-        if (FilterType.WORD.equals(this.type)) {
-            words = Arrays.asList(StringUtils.split(target, separator));
-        } else {
-            words = Arrays.asList(target.split(""));
-        }
-        return words;
+        return FilterType.WORD.equals(this.type) ?
+                Arrays.asList(StringUtils.split(target, separator)) :
+                Arrays.asList(target.split(""));
     }
 
     public List<Boolean> match(String[] targetArr) {

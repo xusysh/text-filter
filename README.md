@@ -1,3 +1,5 @@
 # text-filter
-### Pithy and efficient text filter & matcher  
-### Implemented via KMP, DFA and ACA
+### Features
+* pithy and efficient text filter & matcher  
+* implemented via KMP, DFA and ACA
+* wildcards support
