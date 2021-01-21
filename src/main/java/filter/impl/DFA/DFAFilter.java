@@ -22,8 +22,7 @@ public class DFAFilter extends BaseFilter {
 
     public DFAFilter(FilterType type, String separator) {
         super(type, separator);
-        this.treeRoot = new DFANode();
-        this.treeRoot.setChildren(new HashMap<>());
+        this.treeRoot = new DFANode().setChildren(new HashMap<>());
     }
 
     @Override
