@@ -1,6 +1,7 @@
 package filter.impl.DFA;
 
 import enums.FilterType;
+import enums.WildcardType;
 import filter.impl.BaseFilter;
 import filter.impl.DFA.model.DFANode;
 import org.apache.commons.lang3.StringUtils;
@@ -67,9 +68,26 @@ public class DFAFilter extends BaseFilter {
         DFANode curNode = this.treeRoot;
         for (String word : words) {
             curNode = curNode.getChildren().get(word);
-            if(Objects.isNull(curNode)) return false;
+            if (Objects.isNull(curNode)) return false;
         }
-        if(!curNode.isLeaf()) return false;
+        if (!curNode.isLeaf()) return false;
+        return true;
+    }
+
+    public Boolean matchWildcards(String target) {
+        Collection<String> words = this.getWords(target);
+        DFANode curNode = this.treeRoot;
+        for (String word : words) {
+            if (this.type.equals(FilterType.WORD)) {
+                for (char wildCardChar : curNode.getVal().toCharArray()) {
+                    // todo
+                    WildcardType.getEnumFromValue(wildCardChar);
+                }
+            }
+            curNode = curNode.getChildren().get(word);
+            if (Objects.isNull(curNode)) return false;
+        }
+        if (!curNode.isLeaf()) return false;
         return true;
     }
 
@@ -80,7 +98,7 @@ public class DFAFilter extends BaseFilter {
     }
 
     public List<Boolean> match(String[] targetArr) {
-        for(String target:targetArr) {
+        for (String target : targetArr) {
 
         }
         return null;
