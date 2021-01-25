@@ -96,13 +96,12 @@ public class DFAFilter extends BaseFilter {
                 switch (wildCardType) {
                     case ASTER_RISK:
                         // word ends
-                        if (words.length != i + 1) {
-                            String nextWord = words[i + 1];
-                            if (nextWord.equals(curNode.getVal())) {
-                                nextWords = ArrayUtils.subarray(words, i + 1, words.length);
-                                return this.matchWildcardsWords(nextWords, curNode);
-                            }
-                        } else if(curNode.isLeaf()) return true;
+                        if (words.length == i + 1) return true;
+                        String nextWord = words[i + 1];
+                        if (nextWord.equals(curNode.getVal())) {
+                            nextWords = ArrayUtils.subarray(words, i + 1, words.length);
+                            return this.matchWildcardsWords(nextWords, curNode);
+                        }
                         nextWords = ArrayUtils.subarray(words, i, words.length);
                         childNodeList = curNode.getChildren().values();
                         return childNodeList.stream().anyMatch(node -> this.matchWildcardsWords(nextWords, node));
@@ -127,14 +126,15 @@ public class DFAFilter extends BaseFilter {
                     case EXCLAMATION_MARK:
                         break;
                     case NONE:
-
+                        if(!inExpr) {
+                            curNode = curNode.getChildren().get(word);
+                        }
+                        break;
                     default:
                         throw new EnumConstantNotPresentException(WildcardType.class, String.valueOf(wildCardChar));
                 }
             }
-            curNode = curNode.getChildren().get(word);
             if (Objects.isNull(curNode)) return false;
-            i++;
         }
         if (!curNode.isLeaf()) return false;
         return true;
