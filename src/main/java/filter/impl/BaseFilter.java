@@ -79,7 +79,15 @@ public class BaseFilter implements Filter {
         return null;
     }
 
+    public Boolean matchWithWildcards(String target) {
+        return null;
+    }
+
     public List<Boolean> match(String[] target) {
+        return null;
+    }
+
+    public List<Boolean> matchWithWildcards(String[] target) {
         return null;
     }
 
@@ -87,7 +95,16 @@ public class BaseFilter implements Filter {
         return null;
     }
 
+    public String filterWithWildcards(String target) {
+        return null;
+    }
+
     public String[] filter(String[] target) {
         return new String[0];
     }
+
+    public String[] filterWithWildcards(String[] target) {
+        return new String[0];
+    }
+
 }

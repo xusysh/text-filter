@@ -11,6 +11,8 @@ public enum WildcardType {
 
     ASTER_RISK('*'),
     QUESTION_MARK('?'),
+    OPEN_BRACE('{'),
+    CLOSE_BRACE('}'),
     OPEN_BRACKET('['),
     CLOSE_BRACKET(']'),
     HYPHEN('-'),
@@ -26,6 +28,10 @@ public enum WildcardType {
                 return ASTER_RISK;
             case '?':
                 return QUESTION_MARK;
+            case '{':
+                return OPEN_BRACE;
+            case '}':
+                return CLOSE_BRACE;
             case '[':
                 return OPEN_BRACKET;
             case ']':

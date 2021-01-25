@@ -19,10 +19,18 @@ public interface Filter {
 
     Boolean match(String target);
 
+    Boolean matchWithWildcards(String target);
+
     List<Boolean> match(String[] target);
+
+    List<Boolean> matchWithWildcards(String[] target);
 
     String filter(String target);
 
+    String filterWithWildcards(String target);
+
     String[] filter(String[] target);
+
+    String[] filterWithWildcards(String[] target);
 
 }
