@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public enum WildcardType {
 
     ASTER_RISK('*'),
@@ -18,6 +19,7 @@ public enum WildcardType {
     HYPHEN('-'),
     CARET('^'),
     EXCLAMATION_MARK('!'),
+    NONE
     ;
 
     Character value;
@@ -43,7 +45,7 @@ public enum WildcardType {
             case '!':
                 return EXCLAMATION_MARK;
             default:
-                throw new EnumConstantNotPresentException(WildcardType.class, String.valueOf(value));
+                return NONE;
         }
     }
 
