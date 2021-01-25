@@ -24,7 +24,7 @@ public class MatchWildcardsTest {
     }
 
     @Test
-    public void matchCharTest() throws IOException {
+    public void asterTest() throws IOException {
         FilterBuilder builder = FilterBuilder.getBuilder();
         Filter filter = builder
                 .setImpl(FilterImpl.DFA)
@@ -32,20 +32,25 @@ public class MatchWildcardsTest {
                 .getFilter();
         filter.loadRules("src/test/cases/rules1.txt");
 
-        assertEquals(true, filter.matchWithWildcards("*"));
-        assertEquals(true, filter.matchWithWildcards("/*"));
-        assertEquals(true, filter.matchWithWildcards("/clf/*"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/*/findUserRoleInfo"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/*"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager*"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/find*"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo*"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/find*Info"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole*Info"));
-
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole*sss"));
-        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/*/findUserRole"));
+//        assertEquals(true, filter.matchWithWildcards("*"));
+//        assertEquals(true, filter.matchWithWildcards("/*"));
+//        assertEquals(true, filter.matchWithWildcards("/clf/*"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo*"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/*/findUserRoleInfo"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/*"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager*"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/find*"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo*"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/find*Info"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole*Info"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/*/findUserRole*Info"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p2/*/findUserRole*Info*"));
+//        assertEquals(true, filter.matchWithWildcards("/dgkh/p*2/u*serMana*ger/findUserRoleInfo*"));
+//
+//        assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole*sss"));
+        assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo*sss"));
+//        assertEquals(false, filter.matchWithWildcards("/dgkh/p2/*/findUserRole"));
     }
 
 

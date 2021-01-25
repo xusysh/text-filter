@@ -72,8 +72,7 @@ public class DFAFilter extends BaseFilter {
             curNode = curNode.getChildren().get(word);
             if (Objects.isNull(curNode)) return false;
         }
-        if (!curNode.isLeaf()) return false;
-        return true;
+        return curNode.isLeaf();
     }
 
     @Override
@@ -98,7 +97,7 @@ public class DFAFilter extends BaseFilter {
                         // word ends
                         if (words.length == i + 1) return true;
                         String nextWord = words[i + 1];
-                        if (nextWord.equals(curNode.getVal())) {
+                        if (curNode.getChildren().keySet().contains(nextWord)) {
                             nextWords = ArrayUtils.subarray(words, i + 1, words.length);
                             return this.matchWildcardsWords(nextWords, curNode);
                         }
@@ -136,8 +135,7 @@ public class DFAFilter extends BaseFilter {
             }
             if (Objects.isNull(curNode)) return false;
         }
-        if (!curNode.isLeaf()) return false;
-        return true;
+        return curNode.isLeaf();
     }
 
     private String[] getWords(String target) {
