@@ -95,18 +95,16 @@ public class DFAFilter extends BaseFilter {
                 String nextWord;
                 switch (wildCardType) {
                     case ASTER_RISK:
-                        if (words.length == i + 1) return true;
-                        nextWord = words[i + 1];
-                        while (nextWord.charAt(0) == WildcardType.ASTER_RISK.getValue() || nextWord.charAt(0) == WildcardType.QUESTION_MARK.getValue()) {
+                        while (i + 1 < words.length) {
                             nextWord = words[i + 1];
-                            if(nextWord.charAt(0) != WildcardType.ASTER_RISK.getValue() && nextWord.charAt(0) != WildcardType.QUESTION_MARK.getValue()) break;
+                            if (nextWord.charAt(0) != WildcardType.ASTER_RISK.getValue()
+                                    && nextWord.charAt(0) != WildcardType.QUESTION_MARK.getValue()) break;
                             i++;
                         }
                         if (words.length == i + 1) return true;
                         if (curNode.isLeaf()) return false;
-                        if (curNode.getChildren().containsKey(nextWord)) {
+                        if (curNode.getChildren().containsKey(words[i + 1])) {
                             nextWords = ArrayUtils.subarray(words, i + 1, words.length);
-                            // recall
                             if (this.matchWildcardsWords(nextWords, curNode)) return true;
                         }
                         final String[] nextWordsFinal = ArrayUtils.subarray(words, i, words.length);
