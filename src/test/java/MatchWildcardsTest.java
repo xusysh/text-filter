@@ -53,10 +53,12 @@ public class MatchWildcardsTest {
         assertEquals(true, filter.matchWithWildcards("/scms/p2/cardSts/query*"));
         assertEquals(true, filter.matchWithWildcards("/scms/p2/*/queryCardFinStatus"));
         assertEquals(true, filter.matchWithWildcards("/scms/*/*/queryCardFinStatus"));
-        // todo: Backtracking
-//        assertEquals(true, filter.matchWithWildcards("/*/queryCardFinStatus"));
-//        assertEquals(true, filter.matchWithWildcards("/*/query*"));
+        // Backtracking
+        assertEquals(true, filter.matchWithWildcards("/*/queryCardFinStatus"));
+        assertEquals(true, filter.matchWithWildcards("/*/query*"));
+        assertEquals(true, filter.matchWithWildcards("/*ery*"));
 
+        assertEquals(false, filter.matchWithWildcards("/*eryy"));
         assertEquals(false, filter.matchWithWildcards("/*/p2/"));
         assertEquals(false, filter.matchWithWildcards("/*/p3/*"));
         assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole*sss"));

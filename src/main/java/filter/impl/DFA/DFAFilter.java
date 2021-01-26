@@ -82,7 +82,7 @@ public class DFAFilter extends BaseFilter {
         return this.matchWildcardsWords(words, curNode);
     }
 
-    // todo: recursion -> iteration
+    // todo: recursion -> iteration/tail recursion
     public Boolean matchWildcardsWords(String[] words, DFANode curNode) {
         boolean inExpr = false;
         for (int i = 0; i < words.length; i++) {
@@ -99,11 +99,12 @@ public class DFAFilter extends BaseFilter {
                         String nextWord = words[i + 1];
                         if (curNode.getChildren().keySet().contains(nextWord)) {
                             nextWords = ArrayUtils.subarray(words, i + 1, words.length);
-                            return this.matchWildcardsWords(nextWords, curNode);
+                            // recall
+                            if(this.matchWildcardsWords(nextWords, curNode)) return true;
                         }
-                        nextWords = ArrayUtils.subarray(words, i, words.length);
+                        final String[] nextWordsFinal = ArrayUtils.subarray(words, i, words.length);
                         childNodeList = curNode.getChildren().values();
-                        return childNodeList.stream().anyMatch(node -> this.matchWildcardsWords(nextWords, node));
+                        return childNodeList.stream().anyMatch(node -> this.matchWildcardsWords(nextWordsFinal, node));
                     case QUESTION_MARK:
                         childNodeList = curNode.getChildren().values();
                         if (words.length == i + 1) return childNodeList.stream().anyMatch(item -> item.isLeaf());
