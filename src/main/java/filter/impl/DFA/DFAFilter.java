@@ -82,7 +82,7 @@ public class DFAFilter extends BaseFilter {
         return this.matchWildcardsWords(words, curNode);
     }
 
-    // todo: tail recursion
+    // todo: recursion -> iteration
     public Boolean matchWildcardsWords(String[] words, DFANode curNode) {
         boolean inExpr = false;
         for (int i = 0; i < words.length; i++) {
@@ -94,8 +94,8 @@ public class DFAFilter extends BaseFilter {
                 String[] nextWords;
                 switch (wildCardType) {
                     case ASTER_RISK:
-                        // word ends
                         if (words.length == i + 1) return true;
+                        if (curNode.isLeaf()) return false;
                         String nextWord = words[i + 1];
                         if (curNode.getChildren().keySet().contains(nextWord)) {
                             nextWords = ArrayUtils.subarray(words, i + 1, words.length);
@@ -105,8 +105,8 @@ public class DFAFilter extends BaseFilter {
                         childNodeList = curNode.getChildren().values();
                         return childNodeList.stream().anyMatch(node -> this.matchWildcardsWords(nextWords, node));
                     case QUESTION_MARK:
-                        if (words.length == i + 1) return curNode.isLeaf();
                         childNodeList = curNode.getChildren().values();
+                        if (words.length == i + 1) return childNodeList.stream().anyMatch(item -> item.isLeaf());
                         nextWords = ArrayUtils.subarray(words, i + 1, words.length);
                         return childNodeList.stream().anyMatch(node -> this.matchWildcardsWords(nextWords, node));
                     case OPEN_BRACE:
@@ -125,7 +125,7 @@ public class DFAFilter extends BaseFilter {
                     case EXCLAMATION_MARK:
                         break;
                     case NONE:
-                        if(!inExpr) {
+                        if (!inExpr) {
                             curNode = curNode.getChildren().get(word);
                         }
                         break;

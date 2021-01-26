@@ -29,6 +29,7 @@ public class MatchTest {
         assertEquals(false, filter.match("/opcs/p2/payslice/"));
         assertEquals(false, filter.match("/opcs/p2/payslice"));
         assertEquals(false, filter.match("/opcs/p2/payslice/queryContinExtList2"));
+        assertEquals(false, filter.match("/opcs/p2/payslice/queryContinExtLis"));
         assertEquals(false, filter.match("/opc1/p2/payslice/queryContinExtList"));
         assertEquals(false, filter.match("/opasd"));
         assertEquals(false, filter.match("/a/b/c"));
@@ -82,7 +83,9 @@ public class MatchTest {
         assertEquals(false, filter.match("/opcs/p2/payslice/"));
         assertEquals(false, filter.match("/opcs/p2/payslice"));
         assertEquals(false, filter.match("/opcs/p2/payslice/queryContinExtList2"));
+        assertEquals(false, filter.match("/opcs/p2/payslice/querYContinExtList"));
         assertEquals(false, filter.match("/opc1/p2/payslice/queryContinExtList"));
+        assertEquals(false, filter.match("/opcs/p2/payslice/queryContinExtLis"));
         assertEquals(false, filter.match("/opasd"));
         assertEquals(false, filter.match("/a/b/c"));
         assertEquals(false, filter.match(""));
