@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,9 +23,12 @@ public class DFAFilter extends BaseFilter {
      */
     DFANode treeRoot;
 
+//    HashMap<WildcardType, Function<Object>> wildcardToHandler;
+
     public DFAFilter(FilterType type, String separator) {
         super(type, separator);
         this.treeRoot = new DFANode().setChildren(new HashMap<>());
+//        wildcardToHandler.put(WildcardType.ASTER_RISK,this::loadTree);
     }
 
     @Override

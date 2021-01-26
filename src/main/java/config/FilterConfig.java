@@ -11,8 +11,4 @@ import java.util.function.Function;
  */
 public class FilterConfig {
 
-    HashMap<WildcardType, Function> wildcardToHandler = new HashMap();
-
-    HashMap<WildcardType, WildcardHandler> wildcardToHandler2 = new HashMap();
-
 }
