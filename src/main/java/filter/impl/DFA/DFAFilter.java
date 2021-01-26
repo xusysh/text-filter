@@ -92,22 +92,29 @@ public class DFAFilter extends BaseFilter {
                 WildcardType wildCardType = WildcardType.getEnumFromValue(wildCardChar);
                 Collection<DFANode> childNodeList;
                 String[] nextWords;
+                String nextWord;
                 switch (wildCardType) {
                     case ASTER_RISK:
                         if (words.length == i + 1) return true;
+                        nextWord = words[i + 1];
+                        while (nextWord.charAt(0) == WildcardType.ASTER_RISK.getValue() || nextWord.charAt(0) == WildcardType.QUESTION_MARK.getValue()) {
+                            nextWord = words[i + 1];
+                            if(nextWord.charAt(0) != WildcardType.ASTER_RISK.getValue() && nextWord.charAt(0) != WildcardType.QUESTION_MARK.getValue()) break;
+                            i++;
+                        }
+                        if (words.length == i + 1) return true;
                         if (curNode.isLeaf()) return false;
-                        String nextWord = words[i + 1];
-                        if (curNode.getChildren().keySet().contains(nextWord)) {
+                        if (curNode.getChildren().containsKey(nextWord)) {
                             nextWords = ArrayUtils.subarray(words, i + 1, words.length);
                             // recall
-                            if(this.matchWildcardsWords(nextWords, curNode)) return true;
+                            if (this.matchWildcardsWords(nextWords, curNode)) return true;
                         }
                         final String[] nextWordsFinal = ArrayUtils.subarray(words, i, words.length);
                         childNodeList = curNode.getChildren().values();
                         return childNodeList.stream().anyMatch(node -> this.matchWildcardsWords(nextWordsFinal, node));
                     case QUESTION_MARK:
                         childNodeList = curNode.getChildren().values();
-                        if (words.length == i + 1) return childNodeList.stream().anyMatch(item -> item.isLeaf());
+                        if (words.length == i + 1) return childNodeList.stream().anyMatch(DFANode::isLeaf);
                         nextWords = ArrayUtils.subarray(words, i + 1, words.length);
                         return childNodeList.stream().anyMatch(node -> this.matchWildcardsWords(nextWords, node));
                     case OPEN_BRACE:
