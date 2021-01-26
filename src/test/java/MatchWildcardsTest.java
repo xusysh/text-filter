@@ -78,11 +78,21 @@ public class MatchWildcardsTest {
         assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInf?"));
         assertEquals(true, filter.matchWithWildcards("/dgkh/p2/userManager/findUser?oleInf?"));
         assertEquals(true, filter.matchWithWildcards("/dgkh/p2/user?anager/findUser?oleInfo"));
+        assertEquals(true, filter.matchWithWildcards("/dg?h/??/user?anager/findUser?oleInfo"));
+        assertEquals(true, filter.matchWithWildcards("/????/p2/user?anager/findUser?oleInfo"));
         assertEquals(true, filter.matchWithWildcards("/dgkh/p?/user?an?ger/findUser?oleInf?"));
+        assertEquals(true, filter.matchWithWildcards("/dgkh????user?an?ger/findUser?oleInf?"));
+        assertEquals(true, filter.matchWithWildcards("?????????user?an?ger/findUser?oleInf?"));
         assertEquals(true, filter.matchWithWildcards("/dgkh/p???????an?ger/findUser?oleInf?"));
+        assertEquals(true, filter.matchWithWildcards("?????????????????????????????????????"));
+        assertEquals(true, filter.matchWithWildcards("/ssgf/p2/trans/bhSemt/queryProgress"));
+        assertEquals(true, filter.matchWithWildcards("/????/p2/trans/bhSemt/?????????????"));
+        assertEquals(true, filter.matchWithWildcards("/??????????????????????????????????"));
+
+
 
         assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo?"));
-        assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo?"));
+        assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole?Info"));
     }
 
 
