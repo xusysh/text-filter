@@ -97,8 +97,11 @@ public class DFAFilter extends BaseFilter {
                     case ASTER_RISK:
                         while (i + 1 < words.length) {
                             nextWord = words[i + 1];
+                            if(nextWord.charAt(0) == WildcardType.QUESTION_MARK.getValue())
+                                throw new IllegalArgumentException("'?' should not be the next of '*'");
                             if (nextWord.charAt(0) != WildcardType.ASTER_RISK.getValue()
-                                    && nextWord.charAt(0) != WildcardType.QUESTION_MARK.getValue()) break;
+                                    && nextWord.charAt(0) != WildcardType.QUESTION_MARK.getValue())
+                                break;
                             i++;
                         }
                         if (words.length == i + 1) return true;

@@ -6,7 +6,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class MatchWildcardsTest {
 
@@ -60,8 +62,8 @@ public class MatchWildcardsTest {
         assertEquals(true, filter.matchWithWildcards("/*ery*"));
         // overlay
         assertEquals(true, filter.matchWithWildcards("/scms/**/queryCardFinStatus"));
-        assertEquals(true, filter.matchWithWildcards("/scms/*?/cardSts/queryCardFinStatus"));
-        assertEquals(true, filter.matchWithWildcards("/scms/*/cardSts/queryCardFin??atus"));
+        assertEquals(true, filter.matchWithWildcards("/scms/?*/card*/queryCard???Status"));
+        assertEquals(true, filter.matchWithWildcards("/scms/*/card???/queryCardFin??atus"));
 
         assertEquals(false, filter.matchWithWildcards("/*eryy"));
         assertEquals(false, filter.matchWithWildcards("/*/p2/"));
@@ -69,6 +71,13 @@ public class MatchWildcardsTest {
         assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole*sss"));
         assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo*sss"));
         assertEquals(false, filter.matchWithWildcards("/dgkh/p2/*/findUserRole"));
+
+        try {
+            assertEquals(true, filter.matchWithWildcards("/scms/*?/cardSts/queryCardFinStatus"));
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), is("'?' should not be the next of '*'"));
+        }
+
     }
 
 
