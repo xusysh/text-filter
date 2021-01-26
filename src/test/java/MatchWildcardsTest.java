@@ -111,5 +111,39 @@ public class MatchWildcardsTest {
         assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole?Info"));
     }
 
+    @Test
+    public void asterAndQuestionMarkTest() throws IOException {
+        FilterBuilder builder = FilterBuilder.getBuilder();
+        Filter filter = builder
+                .setImpl(FilterImpl.DFA)
+                .setType(FilterType.CHAR)
+                .getFilter();
+        filter.loadRules("src/test/cases/rules2.txt");
+
+        assertEquals(true, filter.matchWithWildcards("class"));
+        assertEquals(true, filter.matchWithWildcards("cl???"));
+        assertEquals(true, filter.matchWithWildcards("cl*"));
+        assertEquals(true, filter.matchWithWildcards("muscles"));
+        assertEquals(true, filter.matchWithWildcards("???cl*"));
+        assertEquals(true, filter.matchWithWildcards("???cl?*"));
+        assertEquals(true, filter.matchWithWildcards("??*cl??*"));
+        assertEquals(true, filter.matchWithWildcards("?*cl*"));
+        assertEquals(true, filter.matchWithWildcards("???*cl??*"));
+        assertEquals(true, filter.matchWithWildcards("汗流浃肤"));
+        assertEquals(true, filter.matchWithWildcards("汗出沾背"));
+        assertEquals(true, filter.matchWithWildcards("虚汗"));
+        assertEquals(true, filter.matchWithWildcards("?汗"));
+        assertEquals(true, filter.matchWithWildcards("*汗??"));
+        assertEquals(true, filter.matchWithWildcards("汗???*"));
+        assertEquals(true, filter.matchWithWildcards("汗??*"));
+        assertEquals(true, filter.matchWithWildcards("汗?*"));
+        assertEquals(true, filter.matchWithWildcards("汗*"));
+
+        assertEquals(false, filter.matchWithWildcards("cl"));
+        assertEquals(false, filter.matchWithWildcards("汗?"));
+        assertEquals(false, filter.matchWithWildcards("*汗?"));
+
+    }
+
 
 }
