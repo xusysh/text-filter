@@ -90,8 +90,8 @@ public class DFAFilter extends BaseFilter {
     // todo: recursion -> iteration/tail recursion
     public Boolean matchWildcardsWords(String[] words, DFANode curNode) {
         Stack<Character> exprStack = new Stack<>();
-        List<Character> matchStr = new ArrayList<>();
-        List<Character> matchExpr = new ArrayList<>();
+        StringBuilder matchStr = new StringBuilder();
+        StringBuilder matchExpr = new StringBuilder();
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             if (this.type.equals(FilterType.CHAR)) {
@@ -99,11 +99,10 @@ public class DFAFilter extends BaseFilter {
                 WildcardType wildCardType = WildcardType.getEnumFromValue(wildCardChar);
                 if (i > 0 && words[i - 1].equals("\\"))
                     wildCardType = WildcardType.NONE;
-                else if(exprStack.isEmpty() || !exprStack.peek().equals(WildcardType.OPEN_BRACKET.getValue()))
+                if (WildcardType.HYPHEN.getValue().equals(wildCardChar) &&
+                        (exprStack.isEmpty() || exprStack.peek().equals(WildcardType.OPEN_BRACE.getValue())))
                     wildCardType = WildcardType.NONE;
                 Collection<DFANode> childNodeList;
-
-
                 String[] nextWords;
                 String nextWord;
                 switch (wildCardType) {
@@ -136,18 +135,29 @@ public class DFAFilter extends BaseFilter {
                         exprStack.push(wildCardChar);
                         break;
                     case CLOSE_BRACE:
-                        if(exprStack.isEmpty() || !exprStack.pop().equals(WildcardType.OPEN_BRACE.getValue()))
+                        if (exprStack.isEmpty() || !exprStack.pop().equals(WildcardType.OPEN_BRACE.getValue()))
                             throw new IllegalArgumentException("Expression parsing error: brace does not match");
-                        for(Character strCh:matchExpr) {
-                            curNode = curNode.getChildren().get(String.valueOf(strCh));
-                            if (Objects.isNull(curNode)) return false;
-                        }
-                        break;
+                        String[] matchStrArr = StringUtils.split(matchStr.toString(), ",");
+                        final DFANode curNodeFinal = curNode;
+                        final int curWordIndex = i;
+                        return Arrays.stream(matchStrArr).anyMatch(matchString -> {
+                            DFANode curNodeCopy = curNodeFinal.clone();
+                            for (Character matchCh : matchString.toCharArray()) {
+                                curNodeCopy = curNodeCopy.getChildren().get(String.valueOf(matchCh));
+                                if (Objects.isNull(curNodeCopy)) break;
+                            }
+                            if (!Objects.isNull(curNodeCopy))
+                                return this.matchWildcardsWords(ArrayUtils.subarray(words, curWordIndex+1, words.length), curNodeCopy);
+                            return false;
+                        });
                     case CLOSE_BRACKET:
-                        if(exprStack.isEmpty() || !exprStack.pop().equals(WildcardType.OPEN_BRACKET.getValue()))
+                        if (exprStack.isEmpty() || !exprStack.pop().equals(WildcardType.OPEN_BRACKET.getValue()))
                             throw new IllegalArgumentException("Expression parsing error: bracket does not match");
                         break;
                     case HYPHEN:
+                        if (!exprStack.isEmpty() && exprStack.peek().equals(WildcardType.OPEN_BRACKET.getValue())) {
+                            // todo
+                        }
                         break;
                     case CARET:
                     case EXCLAMATION_MARK:
@@ -157,10 +167,10 @@ public class DFAFilter extends BaseFilter {
                     case NONE:
                         if (exprStack.isEmpty()) {
                             curNode = curNode.getChildren().get(word);
-                        } else if(exprStack.peek().equals(WildcardType.OPEN_BRACE.getValue())) {
-                            matchStr.add(wildCardChar);
-                        } else if(exprStack.peek().equals(WildcardType.OPEN_BRACKET.getValue())) {
-                            matchExpr.add(wildCardChar);
+                        } else if (exprStack.peek().equals(WildcardType.OPEN_BRACE.getValue())) {
+                            matchStr.append(wildCardChar);
+                        } else if (exprStack.peek().equals(WildcardType.OPEN_BRACKET.getValue())) {
+                            matchExpr.append(wildCardChar);
                         }
                         break;
                     default:

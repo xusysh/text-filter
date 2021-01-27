@@ -1,5 +1,6 @@
 package filter.impl.DFA.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class DFANode {
 
     String val;
@@ -29,6 +31,10 @@ public class DFANode {
     public DFANode setChildren(HashMap children) {
         this.children = children;
         return this;
+    }
+
+    public DFANode clone() {
+        return new DFANode(this.val, this.isLeaf, (HashMap<String, DFANode>) this.children.clone());
     }
 
 }

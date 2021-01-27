@@ -26,7 +26,7 @@ public class MatchWildcardsTest2 {
     }
 
     @Test
-    public void bracketTest() throws IOException {
+    public void braceTest() throws IOException {
         FilterBuilder builder = FilterBuilder.getBuilder();
         Filter filter = builder
                 .setImpl(FilterImpl.DFA)
@@ -34,16 +34,27 @@ public class MatchWildcardsTest2 {
                 .getFilter();
         filter.loadRules("src/test/cases/rules1.txt");
 
-        try {
-            assertEquals(true, filter.matchWithWildcards("/scms/*?/cardSts/queryCardFinStatus"));
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), is("Expression parsing error: brace does not match"));
-        }
+//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-project"));
+//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-bank"));
+//        assertEquals(true,filter.matchWithWildcards("/tbms/common/query-org-project"));
+//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,bank}"));
+//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,bank,123}"));
+//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,123}"));
+//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,123,banl}"));
+//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project1,123,bank}"));
+        assertEquals(true,filter.matchWithWildcards("/{clf,tbms}/common/query-org-{project1,123,bank}"));
+        assertEquals(true,filter.matchWithWildcards("/{clf1,tbms}/common/query-org-{project1,123,bank}"));
+
+//        try {
+//            assertEquals(true, filter.matchWithWildcards("/scms/*?/cardSts/queryCardFinStatus"));
+//        } catch (IllegalArgumentException e) {
+//            assertThat(e.getMessage(), is("Expression parsing error: brace does not match"));
+//        }
 
     }
 
     @Test
-    public void braceTest() throws IOException {
+    public void bracketTest() throws IOException {
         FilterBuilder builder = FilterBuilder.getBuilder();
         Filter filter = builder
                 .setImpl(FilterImpl.DFA)
@@ -53,6 +64,7 @@ public class MatchWildcardsTest2 {
 
 
         assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-project"));
+        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-bank"));
         assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-bank"));
 
     }
