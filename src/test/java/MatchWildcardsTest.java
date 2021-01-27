@@ -105,8 +105,6 @@ public class MatchWildcardsTest {
         assertEquals(true, filter.matchWithWildcards("/????/p2/trans/bhSemt/?????????????"));
         assertEquals(true, filter.matchWithWildcards("/??????????????????????????????????"));
 
-
-
         assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRoleInfo?"));
         assertEquals(false, filter.matchWithWildcards("/dgkh/p2/userManager/findUserRole?Info"));
     }
@@ -145,5 +143,29 @@ public class MatchWildcardsTest {
 
     }
 
+    @Test
+    public void escapeTest() throws IOException {
+        FilterBuilder builder = FilterBuilder.getBuilder();
+        Filter filter = builder
+                .setImpl(FilterImpl.DFA)
+                .setType(FilterType.CHAR)
+                .getFilter();
+        filter.loadRules("src/test/cases/rules2.txt");
+
+        assertEquals(true, filter.matchWithWildcards("asdf\\*we"));
+        assertEquals(true, filter.matchWithWildcards("asdf\\?qwe"));
+        assertEquals(true, filter.matchWithWildcards("asdf*we"));
+        assertEquals(true, filter.matchWithWildcards("asdf*qwe"));
+        assertEquals(true, filter.matchWithWildcards("asdf?qwe"));
+        assertEquals(true, filter.matchWithWildcards("asdf?we"));
+        assertEquals(true, filter.matchWithWildcards("asdf???"));
+        assertEquals(true, filter.matchWithWildcards("asdf????"));
+        assertEquals(true, filter.matchWithWildcards("asdf???*"));
+        assertEquals(true, filter.matchWithWildcards("asdf*"));
+
+        assertEquals(false, filter.matchWithWildcards("asdf\\*"));
+        assertEquals(false, filter.matchWithWildcards("asdf*\\?qwe"));
+        assertEquals(false, filter.matchWithWildcards("asdf\\*qwe"));
+    }
 
 }

@@ -94,6 +94,8 @@ public class DFAFilter extends BaseFilter {
             if (this.type.equals(FilterType.CHAR)) {
                 char wildCardChar = word.charAt(0);
                 WildcardType wildCardType = WildcardType.getEnumFromValue(wildCardChar);
+                if (i > 0 && words[i - 1].equals("\\"))
+                    wildCardType = WildcardType.NONE;
                 Collection<DFANode> childNodeList;
                 String[] nextWords;
                 String nextWord;
@@ -101,7 +103,7 @@ public class DFAFilter extends BaseFilter {
                     case ASTER_RISK:
                         while (i + 1 < words.length) {
                             nextWord = words[i + 1];
-                            if(nextWord.charAt(0) == WildcardType.QUESTION_MARK.getValue())
+                            if (nextWord.charAt(0) == WildcardType.QUESTION_MARK.getValue())
                                 throw new IllegalArgumentException("'?' should not be the next of '*'");
                             if (nextWord.charAt(0) != WildcardType.ASTER_RISK.getValue()
                                     && nextWord.charAt(0) != WildcardType.QUESTION_MARK.getValue())
@@ -136,6 +138,8 @@ public class DFAFilter extends BaseFilter {
                         break;
                     case CARET:
                     case EXCLAMATION_MARK:
+                        break;
+                    case EXCAPE:
                         break;
                     case NONE:
                         if (!inExpr) {

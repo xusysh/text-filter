@@ -19,6 +19,7 @@ public enum WildcardType {
     HYPHEN('-'),
     CARET('^'),
     EXCLAMATION_MARK('!'),
+    EXCAPE('\\'),
     NONE
     ;
 
@@ -44,6 +45,8 @@ public enum WildcardType {
                 return CARET;
             case '!':
                 return EXCLAMATION_MARK;
+            case '\\':
+                return EXCAPE;
             default:
                 return NONE;
         }
