@@ -34,16 +34,21 @@ public class MatchWildcardsTest2 {
                 .getFilter();
         filter.loadRules("src/test/cases/rules1.txt");
 
-//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-project"));
-//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-bank"));
-//        assertEquals(true,filter.matchWithWildcards("/tbms/common/query-org-project"));
-//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,bank}"));
-//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,bank,123}"));
-//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,123}"));
-//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,123,banl}"));
-//        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project1,123,bank}"));
+        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-project"));
+        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-bank"));
+        assertEquals(true,filter.matchWithWildcards("/tbms/common/query-org-project"));
+        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,bank}"));
+        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,bank,123}"));
+        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,123}"));
+        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project,123,banl}"));
+        assertEquals(true,filter.matchWithWildcards("/clf/common/query-org-{project1,123,bank}"));
         assertEquals(true,filter.matchWithWildcards("/{clf,tbms}/common/query-org-{project1,123,bank}"));
-        assertEquals(true,filter.matchWithWildcards("/{clf1,tbms}/common/query-org-{project1,123,bank}"));
+        assertEquals(true,filter.matchWithWildcards("/{clf,tbms}/common/query-org-{bank}"));
+        assertEquals(true,filter.matchWithWildcards("/tbms/{common,p2}/{query-org-bank,query-org-project}"));
+
+        assertEquals(false,filter.matchWithWildcards("/{clf1,tbms}/common/query-org-{project1,123,bank}"));
+        assertEquals(false,filter.matchWithWildcards("/{clf,tbms}/common/query-org-{project1,123,bank1}"));
+        assertEquals(false,filter.matchWithWildcards("/tbms/{p2}/{query-org-bank,query-org-project}"));
 
 //        try {
 //            assertEquals(true, filter.matchWithWildcards("/scms/*?/cardSts/queryCardFinStatus"));
