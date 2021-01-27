@@ -1,5 +1,6 @@
 package filter.impl.DFA;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import enums.FilterType;
 import enums.WildcardType;
 import filter.impl.BaseFilter;
@@ -88,7 +89,9 @@ public class DFAFilter extends BaseFilter {
 
     // todo: recursion -> iteration/tail recursion
     public Boolean matchWildcardsWords(String[] words, DFANode curNode) {
-        boolean inExpr = false;
+        Stack<Character> exprStack = new Stack<>();
+        List<Character> matchStr = new ArrayList<>();
+        List<Character> matchExpr = new ArrayList<>();
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             if (this.type.equals(FilterType.CHAR)) {
@@ -96,7 +99,11 @@ public class DFAFilter extends BaseFilter {
                 WildcardType wildCardType = WildcardType.getEnumFromValue(wildCardChar);
                 if (i > 0 && words[i - 1].equals("\\"))
                     wildCardType = WildcardType.NONE;
+                else if(exprStack.isEmpty() || !exprStack.peek().equals(WildcardType.OPEN_BRACKET.getValue()))
+                    wildCardType = WildcardType.NONE;
                 Collection<DFANode> childNodeList;
+
+
                 String[] nextWords;
                 String nextWord;
                 switch (wildCardType) {
@@ -125,14 +132,20 @@ public class DFAFilter extends BaseFilter {
                         nextWords = ArrayUtils.subarray(words, i + 1, words.length);
                         return childNodeList.stream().anyMatch(node -> this.matchWildcardsWords(nextWords, node));
                     case OPEN_BRACE:
+                    case OPEN_BRACKET:
+                        exprStack.push(wildCardChar);
                         break;
                     case CLOSE_BRACE:
-                        break;
-                    case OPEN_BRACKET:
-                        inExpr = true;
+                        if(exprStack.isEmpty() || !exprStack.pop().equals(WildcardType.OPEN_BRACE.getValue()))
+                            throw new IllegalArgumentException("Expression parsing error: brace does not match");
+                        for(Character strCh:matchExpr) {
+                            curNode = curNode.getChildren().get(String.valueOf(strCh));
+                            if (Objects.isNull(curNode)) return false;
+                        }
                         break;
                     case CLOSE_BRACKET:
-                        inExpr = false;
+                        if(exprStack.isEmpty() || !exprStack.pop().equals(WildcardType.OPEN_BRACKET.getValue()))
+                            throw new IllegalArgumentException("Expression parsing error: bracket does not match");
                         break;
                     case HYPHEN:
                         break;
@@ -142,8 +155,12 @@ public class DFAFilter extends BaseFilter {
                     case EXCAPE:
                         break;
                     case NONE:
-                        if (!inExpr) {
+                        if (exprStack.isEmpty()) {
                             curNode = curNode.getChildren().get(word);
+                        } else if(exprStack.peek().equals(WildcardType.OPEN_BRACE.getValue())) {
+                            matchStr.add(wildCardChar);
+                        } else if(exprStack.peek().equals(WildcardType.OPEN_BRACKET.getValue())) {
+                            matchExpr.add(wildCardChar);
                         }
                         break;
                     default:
