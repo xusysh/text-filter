@@ -1,6 +1,5 @@
 package filter.impl.DFA;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import enums.FilterType;
 import enums.WildcardType;
 import filter.impl.BaseFilter;
@@ -10,9 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author guojingyu
@@ -92,13 +88,16 @@ public class DFAFilter extends BaseFilter {
         Stack<Character> exprStack = new Stack<>();
         StringBuilder matchStr = new StringBuilder();
         StringBuilder matchExpr = new StringBuilder();
+        Boolean lastEscapeValid = true;
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             if (this.type.equals(FilterType.CHAR)) {
                 char wildCardChar = word.charAt(0);
                 WildcardType wildCardType = WildcardType.getEnumFromValue(wildCardChar);
-                if (i > 0 && words[i - 1].equals("\\"))
+                if (i > 0 && words[i - 1].equals("\\") && lastEscapeValid) {
                     wildCardType = WildcardType.NONE;
+                    lastEscapeValid = !WildcardType.ESCAPE.getValue().equals(wildCardChar);
+                }
                 if (WildcardType.HYPHEN.getValue().equals(wildCardChar) &&
                         (exprStack.isEmpty() || exprStack.peek().equals(WildcardType.OPEN_BRACE.getValue())))
                     wildCardType = WildcardType.NONE;
@@ -147,12 +146,14 @@ public class DFAFilter extends BaseFilter {
                                 if (Objects.isNull(curNodeCopy)) break;
                             }
                             if (!Objects.isNull(curNodeCopy))
-                                return this.matchWildcardsWords(ArrayUtils.subarray(words, curWordIndex+1, words.length), curNodeCopy);
+                                return this.matchWildcardsWords(ArrayUtils.subarray(words, curWordIndex + 1, words.length), curNodeCopy);
                             return false;
                         });
                     case CLOSE_BRACKET:
                         if (exprStack.isEmpty() || !exprStack.pop().equals(WildcardType.OPEN_BRACKET.getValue()))
                             throw new IllegalArgumentException("Expression parsing error: bracket does not match");
+                        String[] matchExprArr = StringUtils.split(matchStr.toString(), ",");
+
                         break;
                     case HYPHEN:
                         if (!exprStack.isEmpty() && exprStack.peek().equals(WildcardType.OPEN_BRACKET.getValue())) {
@@ -162,7 +163,7 @@ public class DFAFilter extends BaseFilter {
                     case CARET:
                     case EXCLAMATION_MARK:
                         break;
-                    case EXCAPE:
+                    case ESCAPE:
                         break;
                     case NONE:
                         if (exprStack.isEmpty()) {

@@ -10,20 +10,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum WildcardType {
 
-    ASTER_RISK('*'),
-    QUESTION_MARK('?'),
-    OPEN_BRACE('{'),
-    CLOSE_BRACE('}'),
-    OPEN_BRACKET('['),
-    CLOSE_BRACKET(']'),
-    HYPHEN('-'),
-    CARET('^'),
-    EXCLAMATION_MARK('!'),
-    EXCAPE('\\'),
-    NONE
-    ;
+    ASTER_RISK('*', 0),
+    QUESTION_MARK('?', 0),
+    OPEN_BRACE('{', 2),
+    CLOSE_BRACE('}', 2),
+    OPEN_BRACKET('[', 2),
+    CLOSE_BRACKET(']', 2),
+    HYPHEN('-', 1),
+    CARET('^', 3),
+    EXCLAMATION_MARK('!', 3),
+    ESCAPE('\\', 4),
+    NONE;
 
     Character value;
+
+    Integer privilege;
 
     public static WildcardType getEnumFromValue(char value) {
         switch (value) {
@@ -46,7 +47,7 @@ public enum WildcardType {
             case '!':
                 return EXCLAMATION_MARK;
             case '\\':
-                return EXCAPE;
+                return ESCAPE;
             default:
                 return NONE;
         }

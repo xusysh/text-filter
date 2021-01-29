@@ -152,7 +152,6 @@ public class MatchWildcardsTest {
                 .getFilter();
         filter.loadRules("src/test/cases/rules2.txt");
 
-        assertEquals(true, filter.matchWithWildcards("asdf\\*we"));
         assertEquals(true, filter.matchWithWildcards("asdf\\?qwe"));
         assertEquals(true, filter.matchWithWildcards("asdf*we"));
         assertEquals(true, filter.matchWithWildcards("asdf*qwe"));
@@ -162,10 +161,13 @@ public class MatchWildcardsTest {
         assertEquals(true, filter.matchWithWildcards("asdf????"));
         assertEquals(true, filter.matchWithWildcards("asdf???*"));
         assertEquals(true, filter.matchWithWildcards("asdf*"));
+        // todo: pretreatment
+        assertEquals(true, filter.matchWithWildcards("qwe\\\\\\{we"));
 
         assertEquals(false, filter.matchWithWildcards("asdf\\*"));
         assertEquals(false, filter.matchWithWildcards("asdf*\\?qwe"));
         assertEquals(false, filter.matchWithWildcards("asdf\\*qwe"));
+        assertEquals(false, filter.matchWithWildcards("asdf\\?\\?we"));
     }
 
 }
