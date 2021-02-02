@@ -94,9 +94,11 @@ public class DFAFilter extends BaseFilter {
             if (this.type.equals(FilterType.CHAR)) {
                 char wildCardChar = word.charAt(0);
                 WildcardType wildCardType = WildcardType.getEnumFromValue(wildCardChar);
-                if (i > 0 && words[i - 1].equals("\\") && lastEscapeValid) {
+                if (i > 0 && words[i - 1].equals(String.valueOf(WildcardType.ESCAPE.getValue())) && lastEscapeValid) {
                     wildCardType = WildcardType.NONE;
                     lastEscapeValid = !WildcardType.ESCAPE.getValue().equals(wildCardChar);
+                } else if(WildcardType.ESCAPE.getValue().equals(wildCardChar)) {
+                    lastEscapeValid = true;
                 }
                 if (WildcardType.HYPHEN.getValue().equals(wildCardChar) &&
                         (exprStack.isEmpty() || exprStack.peek().equals(WildcardType.OPEN_BRACE.getValue())))

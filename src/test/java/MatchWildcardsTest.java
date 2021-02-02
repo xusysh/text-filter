@@ -161,9 +161,14 @@ public class MatchWildcardsTest {
         assertEquals(true, filter.matchWithWildcards("asdf????"));
         assertEquals(true, filter.matchWithWildcards("asdf???*"));
         assertEquals(true, filter.matchWithWildcards("asdf*"));
-        // todo: pretreatment
+        assertEquals(true, filter.matchWithWildcards("qwe?\\{we"));
         assertEquals(true, filter.matchWithWildcards("qwe\\\\\\{we"));
+        assertEquals(true, filter.matchWithWildcards("asdf\\*we"));
+        assertEquals(true, filter.matchWithWildcards("asdf\\?qwe"));
+        // todo:fix
+//        assertEquals(true, filter.matchWithWildcards("asdf*\\?qwe"));
 
+        assertEquals(false, filter.matchWithWildcards("asdf\\?we"));
         assertEquals(false, filter.matchWithWildcards("asdf\\*"));
         assertEquals(false, filter.matchWithWildcards("asdf*\\?qwe"));
         assertEquals(false, filter.matchWithWildcards("asdf\\*qwe"));
